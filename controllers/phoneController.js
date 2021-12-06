@@ -1,5 +1,14 @@
 const e = require('express');
 const models =require('../models/index');
+const { application } = require('express');
+
+exports.upload = async (req , res) =>{
+  console.log(req.file)
+  res.status(200).json({
+    message:"Uploaded."
+  })
+ }
+
 //list
 exports.index = async (req , res) =>{
  const phones =  await models.phone.findAll();
@@ -9,11 +18,13 @@ exports.index = async (req , res) =>{
 }
 //C
 exports.create = async (req , res) =>{
+  
   const post = {
     phonenumber: req.body.phonenumber,
     owner: req.body.owner,
     status: req.body.status,
   }
+
  await models.phone.create(post).then(result  =>{
     res.status(201).json({
       data:result,
@@ -30,6 +41,7 @@ exports.create = async (req , res) =>{
 //R
 exports.show = async (req , res) =>{
   const id = req.params.id;
+  console.log(req.params)
   const findbyID =  await models.phone.findByPk(id)
   if(findbyID == null){
     res.status(400).json({
@@ -44,6 +56,7 @@ exports.show = async (req , res) =>{
 //U
  exports.update = async (req , res) =>{
   const id =req.params.id
+
  const data = {
    phonenumber: req.body.phonenumber,
    owner: req.body.owner,
